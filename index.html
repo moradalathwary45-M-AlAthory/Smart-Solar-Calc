@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة الطاقة الذكية - مؤسسة عادل الجرادي</title>
+    <style>
+        :root { --main-bg: #121212; --card-bg: #1e1e1e; --accent: #f39c12; --text: #e0e0e0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--main-bg); color: var(--text); margin: 0; padding: 10px; }
+        .container { max-width: 500px; margin: auto; background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        h2 { text-align: center; color: var(--accent); margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .group { background: #252525; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.9em; }
+        input, select { width: 100%; padding: 12px; background: #333; border: 1px solid #444; color: white; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: var(--accent); color: #000; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #e67e22; }
+        .result { display: none; margin-top: 20px; padding: 15px; background: #1a332a; border-radius: 8px; border-right: 4px solid #27ae60; line-height: 1.8; }
+        .wa-btn { display: none; background: #25D366; color: white; text-decoration: none; text-align: center; padding: 15px; border-radius: 8px; margin-top: 10px; font-weight: bold; }
+        .brand { text-align: center; margin-top: 20px; font-size: 0.8em; color: #888; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>حاسبة الطاقة الذكية ⚡</h2>
+    
+    <div class="group">
+        <label>إجمالي الحمل (وات) - يشمل المكيفات:</label>
+        <input type="number" id="load" placeholder="مثلاً: 3000">
+        
+        <label>ساعات التشغيل المطلوبة:</label>
+        <input type="number" id="hrs" placeholder="مثلاً: 8">
+    </div>
+
+    <div class="group">
+        <label>فولتية النظام:</label>
+        <select id="v_sys">
+            <option value="12">12 فولت</option>
+            <option value="24" selected>24 فولت</option>
+            <option value="48">48 فولت</option>
+        </select>
+
+        <label>نوع التخزين المفضل:</label>
+        <select id="b_type">
+            <option value="0.85">بطاريات ليثيوم (LifePo4)</option>
+            <option value="0.50">بطاريات جل (Gel/Tubular)</option>
+            <option value="0.40">بطاريات أسيد (Lead Acid)</option>
+        </select>
+    </div>
+
+    <div class="group">
+        <label>قدرة اللوح المستخدم (وات):</label>
+        <input type="number" id="p_watt" value="550">
+        
+        <label>طول الكابل (من الألواح للإنفرتر):</label>
+        <input type="number" id="dist" value="15">
+    </div>
+
+    <button onclick="calculate()">تحليل النظام الفني</button>
+
+    <div id="res" class="result"></div>
+    <a href="#" id="wa_link" class="wa-btn" target="_blank">مشاركة التقرير عبر واتساب</a>
+
+    <div class="brand">
+        برمجة المهندس: مراد عبد الواحد النعمان <br>
+        مؤسسة عادل الجرادي للطاقة المتجددة - الحديدة
+    </div>
+</div>
+
+<script>
+function calculate() {
+    const load = parseFloat(document.getElementById('load').value);
+    const hrs = parseFloat(document.getElementById('hrs').value);
+    const vsys = parseFloat(document.getElementById('v_sys').value);
+    const b_eff = parseFloat(document.getElementById('b_type').value);
+    const pwatt = parseFloat(document.getElementById('p_watt').value);
+    const dist = parseFloat(document.getElementById('dist').value);
+
+    if(!load || !hrs) { alert("يرجى إدخال الأحمال"); return; }
+
+    const energy = load * hrs;
+    
+    // حساب سعة البطارية
+    const ah_needed = (energy / vsys) / b_eff;
+    const b_qty = Math.ceil(ah_needed / 200); 
+
+    // حساب الألواح
+    const solar_p = (energy * 1.3) / 5; 
+    const p_qty = Math.ceil(solar_p / pwatt);
+
+    // حجم الإنفرتر
+    const inv = Math.ceil((load * 1.25) / 1000);
+
+    // مقاس السلك (تقديري هندسي)
+    let wire = "6 مم";
+    if (dist > 20 || (solar_p/vsys) > 40) wire = "10 مم";
+    if ((solar_p/vsys) > 60) wire = "16 مم";
+
+    const report = `
+<b>نتائج التحليل الفني:</b><br>
+✅ حجم الإنفرتر المناسب: ${inv} كيلو وات<br>
+✅ عدد الألواح (${pwatt}W): ${p_qty} ألواح<br>
+✅ سعة التخزين المطلوبة: ${ah_needed.toFixed(0)} أمبير<br>
+✅ عدد بطاريات (200A): ${b_qty} بطارية<br>
+✅ مقاس الكابل المقترح: ${wire}<br>
+📍 نظام تشغيل آمن ومستقر لمؤسسة الجرادي.
+    `;
+
+    const resDiv = document.getElementById('res');
+    resDiv.style.display = 'block';
+    resDiv.innerHTML = report;
+
+    const waText = window.encodeURIComponent("تقرير فني - مؤسسة عادل الجرادي:\n" + report.replace(/<br>/g, "\n").replace(/<b>/g, "").replace(/<\/b>/g, ""));
+    const waLink = document.getElementById('wa_link');
+    waLink.href = "https://wa.me/?text=" + waText;
+    waLink.style.display = 'block';
+}
+</script>
+</body>
+</html>
