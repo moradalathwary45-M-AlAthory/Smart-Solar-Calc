@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -22,6 +21,7 @@
         .res-box { background: #1a2a3a; border: 2px solid var(--orange); border-radius: 15px; padding: 20px; animation: fadeIn 0.5s; }
         .res-row { display: flex; justify-content: space-between; border-bottom: 1px solid #2d4059; padding: 12px 0; align-items: center; }
         .res-val { color: var(--gold); font-weight: bold; font-size: 20px; }
+        .unit-detail { font-size: 12px; color: #9ecbff; display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
@@ -30,42 +30,22 @@
 <div class="main-card">
     <img src="mur.png" class="profile-img" alt="المهندس مراد">
     <h2>المهندس مراد الأثوري</h2>
-    <div class="sub-text">مدير مؤسسة عادل الجرادي للطاقة المتجددة</div>
+    <div class="sub-text">مهندس أنظمة طاقة متجددة | مؤسسة عادل الجرادي</div>
 
     <div class="grid">
-        <div>
-            <label>حمل النهار (وات)</label>
-            <input type="number" id="p_day" placeholder="مثلاً: 1500" onfocus="this.placeholder=''">
-        </div>
-        <div>
-            <label>ساعات النهار</label>
-            <input type="number" id="h_day" placeholder="مثلاً: 6" onfocus="this.placeholder=''">
-        </div>
-        <div>
-            <label>حمل الليل (وات)</label>
-            <input type="number" id="p_night" placeholder="مثلاً: 500" onfocus="this.placeholder=''">
-        </div>
-        <div>
-            <label>ساعات الليل</label>
-            <input type="number" id="h_night" placeholder="مثلاً: 10" onfocus="this.placeholder=''">
-        </div>
-        <div class="full">
-            <label>قدرة اللوح المتوفر (وات)</label>
-            <input type="number" id="panel_w" placeholder="مثلاً: 550" onfocus="this.placeholder=''">
-        </div>
-        <div class="full">
-            <label>نوع البطاريات</label>
+        <div><label>حمل النهار (وات)</label><input type="number" id="p_day" placeholder="مثلاً: 1500" onfocus="this.placeholder=''"></div>
+        <div><label>ساعات النهار</label><input type="number" id="h_day" placeholder="مثلاً: 6" onfocus="this.placeholder=''"></div>
+        <div><label>حمل الليل (وات)</label><input type="number" id="p_night" placeholder="مثلاً: 500" onfocus="this.placeholder=''"></div>
+        <div><label>ساعات الليل</label><input type="number" id="h_night" placeholder="مثلاً: 10" onfocus="this.placeholder=''"></div>
+        <div class="full"><label>قدرة اللوح المتوفر (وات)</label><input type="number" id="panel_w" placeholder="مثلاً: 550" onfocus="this.placeholder=''"></div>
+        <div class="full"><label>نوع البطاريات</label>
             <select id="b_tech">
                 <option value="0.8">ليثيوم LiFePO4 (تفريغ 80%)</option>
                 <option value="0.5">جل/أسيد Deep Cycle (تفريغ 50%)</option>
             </select>
         </div>
-        <div>
-            <label>سعة البطارية (Ah)</label>
-            <input type="number" id="b_ah" placeholder="مثلاً: 200" onfocus="this.placeholder=''">
-        </div>
-        <div>
-            <label>جهد النظام (V)</label>
+        <div><label>سعة البطارية (Ah)</label><input type="number" id="b_ah" placeholder="مثلاً: 200" onfocus="this.placeholder=''"></div>
+        <div><label>جهد النظام (V)</label>
             <select id="sys_v">
                 <option value="12">12V</option>
                 <option value="24">24V</option>
@@ -75,7 +55,6 @@
     </div>
 
     <button class="btn-calc" onclick="generateReport()">إصدار التقرير الفني النهائي</button>
-
     <div id="report-area"></div>
 </div>
 
@@ -90,30 +69,28 @@ function generateReport() {
     const vS = parseFloat(document.getElementById('sys_v').value);
     const dod = parseFloat(document.getElementById('b_tech').value);
 
-    // الحسابات الهندسية
-    const energyDay = pD * hD;
-    const energyNight = pN * hN;
-    const totalE = energyDay + energyNight;
-
-    // 1. عدد الألواح بناءً على قدرة اللوح المدخلة
+    const totalE = (pD * hD) + (pN * hN);
     const numPanels = Math.ceil(totalE / (pW * 5 * 0.8));
-
-    // 2. عدد البطاريات بناءً على نوع البطارية (ليثيوم أو جل)
-    const reqAh = (energyNight / vS) / dod;
+    
+    // حساب البطاريات بالكيلو واط
+    const reqAh = (pN * hN / vS) / dod;
     const numBatt = Math.ceil(reqAh / bAh);
+    const totalKwh = ((numBatt * bAh * vS) / 1000).toFixed(1); // حساب الكيلو واط الإجمالي
 
-    // 3. حجم الانفرتر (يظهر في التقرير فقط)
     const invSize = (Math.max(pD, pN) * 1.3 / 1000).toFixed(1);
 
     document.getElementById('report-area').innerHTML = `
         <div class="res-box">
-            <center><h3 style="color:var(--gold); margin:0 0 15px 0;">📋 نتائج التقرير الفني</h3></center>
+            <center><h3 style="color:var(--gold); margin:0 0 15px 0;">📋 نتائج التصميم الهندسي</h3></center>
             <div class="res-row"><span>عدد الألواح (${pW}W):</span> <span class="res-val">${numPanels} ألواح</span></div>
-            <div class="res-row"><span>عدد البطاريات (${bAh}Ah):</span> <span class="res-val">${numBatt} حبات</span></div>
-            <div class="res-row"><span>حجم الانفرتر المطلوب:</span> <span class="res-val">${invSize} kW</span></div>
-            <div class="res-row" style="border:none;"><span>إجمالي استهلاك اليوم:</span> <span>${totalE} Wh</span></div>
+            <div class="res-row">
+                <span>البطاريات المطلوبة:</span> 
+                <div style="text-align:left"><span class="res-val">${numBatt} حبات</span><br><span class="unit-detail">بإجمالي سعة: ${totalKwh} kWh</span></div>
+            </div>
+            <div class="res-row"><span>حجم الانفرتر:</span> <span class="res-val">${invSize} kW</span></div>
+            <div class="res-row" style="border:none;"><span>الطاقة اليومية:</span> <span>${totalE} Wh</span></div>
             <br>
-            <button style="background:#27ae60; color:#fff; width:100%; padding:12px; border-radius:10px; border:none; cursor:pointer; font-weight:bold;" onclick="window.print()">حفظ التقرير كـ PDF</button>
+            <button style="background:#27ae60; color:#fff; width:100%; padding:12px; border-radius:10px; border:none; cursor:pointer; font-weight:bold;" onclick="window.print()">حفظ التقرير PDF</button>
         </div>
     `;
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
