@@ -2,13 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حاسبة الطاقة الذكية - المهندس مراد الأثوري</title>
     <style>
-        body{margin:0;font-family:Tahoma,sans-serif;background:#07111f;color:#fff;padding:10px}
+        body{margin:0; font-family:Tahoma,sans-serif;background:#07111f;color:#fff;padding:10px}
         .wrap{max-width:600px;margin:auto;padding:10px}
-        .card{background:#0d1b2a;border:1px solid #1d3557;border-radius:18px;padding:20px;box-shadow:0 0 20px rgba(0,150,255,.15)}
-        h1{text-align:center;color:#ffd54f;font-size:22px;margin-top:15px;margin-bottom:5px}
+        .card{background:#0d1b2a;border:1px solid #1d3557;border-radius:18px;padding:20px;box-shadow:0 0 20px rgba(0,15,30,0.5);text-align:center;color:#ffd54f;font-size:22px;margin-top:5px}
         .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
         .full{grid-column:1/-1}
         label{display:block;margin:8px 0 4px;color:#9ecbff;font-size:13px}
@@ -16,8 +15,7 @@
         input,select{background:#13263d;color:#fff;border:1px solid #1d3557}
         button{background:linear-gradient(45deg,#ff9800,#ffd54f);font-weight:bold;color:#000;cursor:pointer;margin-top:10px}
         #out{margin-top:15px;line-height:1.9}
-        .hero{width:150px;height:150px;border-radius:20px;display:block;margin:0 auto;border:3px solid #ff9800;object-fit:cover;box-shadow:0 0 15px #ff9800}
-        @media(max-width:500px){.grid{grid-template-columns:1fr}}
+        .hero{width:150px;height:150px;border-radius:20px;display:block;margin:0 auto;border:3px solid #ff9800;object-fit:cover}
         .res-box{background:#13263d; padding:15px; border-radius:12px; border:1px solid #ff9800; margin-top:10px;}
         .name-tag{text-align:center; color:#ffd54f; font-weight:bold; margin:5px 0; font-size:18px;}
         .firm-tag{text-align:center; color:#9ecbff; margin-bottom:15px; font-size:14px;}
@@ -27,7 +25,6 @@
 <div class='wrap'>
     <div class='card'>
         <img class='hero' src='mur.png' alt="المهندس مراد الأثوري">
-        
         
         <h1>⚡ حاسبة الطاقة الذكية ⚡</h1>
         <div class="name-tag">المهندس مراد الأثوري</div>
@@ -39,46 +36,47 @@
             <div><label>ساعات الليل</label><input id='night' type='number' placeholder='8'></div>
             <div><label>جهد النظام (V)</label><select id='volt'><option value="12">12V</option><option value="24">24V</option><option value="48" selected>48V</option></select></div>
             <div><label>قدرة اللوح (وات)</label><input id='panel' type='number' placeholder='550'></div>
-            <div><label>ساعات الشمس</label><input id='sun' type='number' placeholder='5'></div>
+            <div><label>ساعات الذروة</label><input id='sun' type='number' placeholder='5'></div>
             <div><label>كفاءة النظام %</label><input id='eff' type='number' placeholder='80'></div>
             <div><label>أيام الاحتياط</label><input id='days' type='number' placeholder='1'></div>
             <div class='full'><button onclick='calc()'>احسب المنظومة الآن</button></div>
         </div>
         <div id='out'></div>
-        <div class='full'><button style="background:#2e7d32; color:#fff; margin-top:20px;" onclick='window.print()'>حفظ التقرير PDF</button></div>
+        <div class='full'><button style="background:#2e7d32; color:#fff; margin-top:20px;" onclick="window.print()">تصدير التقرير PDF</button></div>
     </div>
 </div>
 
 <script>
 function calc(){
-    const l = +document.getElementById('load').value || 3000;
-    const d = +document.getElementById('day').value || 6;
-    const n = +document.getElementById('night').value || 8;
-    const v = +document.getElementById('volt').value;
-    const p = +document.getElementById('panel').value || 550;
-    const s = +document.getElementById('sun').value || 5;
-    const e = (+document.getElementById('eff').value || 80)/100;
-    const ds = +document.getElementById('days').value || 1;
+    const l = document.getElementById('load').value || 3000;
+    const d = document.getElementById('day').value || 6;
+    const n = document.getElementById('night').value || 8;
+    const v = document.getElementById('volt').value;
+    const p = document.getElementById('panel').value || 550;
+    const s = document.getElementById('sun').value || 5;
+    const w = (document.getElementById('eff').value || 80)/100;
+    const ds = document.getElementById('days').value || 1;
 
     const dayWh = l * d;
     const nightWh = l * n;
     const total = dayWh + nightWh;
-    const battWh = (nightWh * ds) / e;
+    const battWh = (nightWh * ds) / w;
     const ah = battWh / v;
     const inv = (l * 1.25 / 1000).toFixed(1);
-    const panels = Math.ceil(total / (p * s * e));
+    const panels = Math.ceil(total / (p * s * w));
 
     document.getElementById('out').innerHTML = `
-    <div class='res-box'>
-        <b style="color:#ffd54f">📊 النتائج الهندسية المقترحة:</b><br>
-        • استهلاك النهار: \${dayWh} Wh<br>
-        • استهلاك الليل: \${nightWh} Wh<br>
-        • الإجمالي اليومي: \${total} Wh/day<br>
-        • سعة البطارية: \${ah.toFixed(0)} Ah @ \${v}V<br>
-        • حجم الانفرتر: \${inv} kW<br>
-        • عدد الألواح: \${panels} لوح (قدرة \${p}W)
+    <div class="res-box">
+        <b style="color:#ffd54f;">📊 النتائج الهندسية المقترحة:</b><br>
+        • استهلاك النهار: ${dayWh} Wh<br>
+        • استهلاك الليل: ${nightWh} Wh<br>
+        • الإجمالي اليومي: ${total} Wh/day<br>
+        • سعة البطارية: ${ah.toFixed(0)} Ah @ ${v}V<br>
+        • حجم الانفرتر: ${inv} kW<br>
+        • عدد الألواح: ${panels} لوح (قدرة ${p}W)
     </div>`;
 }
 </script>
 </body>
 </html>
+
