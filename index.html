@@ -6,91 +6,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حاسبة المهندس مراد الأثوري</title>
     <style>
-        body{margin:0; font-family:Tahoma,sans-serif;background:#07111f;color:#fff;padding:10px}
-        .wrap{max-width:600px;margin:auto;padding:10px}
-        .card{background:#0d1b2a;border:1px solid #1d3557;border-radius:18px;padding:20px;box-shadow:0 0 20px rgba(0,15,30,0.5);text-align:center}
-        .main-title { font-size: 22px; margin: 15px 0; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffd54f; }
-        .grid{display:grid;grid-template-columns: 1fr 1fr;gap:12px;text-align:right}
-        .full{grid-column:1/-1}
-        label{display:block;margin:8px 0 4px;color:#9ecbff;font-size:13px;font-weight:bold}
-        input,select,button{width:100%;padding:12px;border-radius:12px;border:none;box-sizing:border-box;font-size:15px}
-        input,select{background:#13263d;color:#fff;border:1px solid #1d3557; transition: 0.3s;}
-        input:focus{outline: 2px solid #ff9800; background: #1a2a3a;}
-        button{background:linear-gradient(45deg,#ff9800,#ffd54f);font-weight:bold;color:#000;cursor:pointer;margin-top:15px;font-size:18px}
-        #out{margin-top:20px; text-align:right}
-        .hero{width:120px;height:120px;border-radius:20px;display:block;margin:0 auto;border:3px solid #ff9800;object-fit:cover}
-        .res-box{background:#1a2a3a; padding:20px; border-radius:15px; border:2px solid #ff9800; color:#fff; line-height:1.8}
-        .res-row{display:flex; justify-content:space-between; border-bottom:1px solid #2d4059; padding:10px 0}
-        .res-val{color:#ff9800; font-weight:bold; font-size:20px}
-        .name-tag{color:#ffd54f; font-weight:bold; margin:10px 0 5px; font-size:18px;}
-        .firm-tag{color:#9ecbff; margin-bottom:15px; font-size:13px;}
+        :root { --gold: #ffd54f; --orange: #ff9800; --bg: #07111f; --card: #0d1b2a; }
+        body { margin: 0; font-family: Tahoma, sans-serif; background: var(--bg); color: #fff; padding: 15px; }
+        .main-card { max-width: 600px; margin: auto; background: var(--card); border: 2px solid #1d3557; border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .profile-img { width: 120px; height: 120px; border-radius: 15px; display: block; margin: 0 auto 15px; border: 3px solid var(--orange); object-fit: cover; }
+        h2 { text-align: center; color: var(--gold); margin: 10px 0 5px; }
+        .sub-text { text-align: center; color: #9ecbff; font-size: 14px; margin-bottom: 25px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 5px; color: #9ecbff; font-size: 13px; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #1d3557; background: #13263d; color: #fff; box-sizing: border-box; font-size: 16px; }
+        input:focus { border-color: var(--orange); outline: none; }
+        .btn-calc { width: 100%; padding: 18px; margin-top: 20px; border-radius: 12px; border: none; background: linear-gradient(45deg, var(--orange), var(--gold)); color: #000; font-weight: bold; font-size: 18px; cursor: pointer; }
+        #report-area { margin-top: 25px; }
+        .res-box { background: #1a2a3a; border: 2px solid var(--orange); border-radius: 15px; padding: 20px; animation: fadeIn 0.5s; }
+        .res-row { display: flex; justify-content: space-between; border-bottom: 1px solid #2d4059; padding: 12px 0; align-items: center; }
+        .res-val { color: var(--gold); font-weight: bold; font-size: 20px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
-<div class='wrap'>
-    <div class='card'>
-        <img class='hero' src='mur.png' alt="المهندس مراد">
-        <div class="main-title"><span>⚡</span> حاسبة الطاقة الذكية <span>⚡</span></div>
-        <div class="name-tag">المهندس مراد الأثوري</div>
-        <div class="firm-tag">مؤسسة عادل الجرادي للطاقة المتجددة</div>
-        
-        <div class='grid'>
-            <div><label>حمل النهار (وات)</label><input id='loadD' type='number' placeholder="مثال: 1500" onfocus="this.placeholder=''"></div>
-            <div><label>ساعات النهار</label><input id='hrD' type='number' placeholder="مثال: 6" onfocus="this.placeholder=''"></div>
-            <div><label>حمل الليل (وات)</label><input id='loadN' type='number' placeholder="مثال: 500" onfocus="this.placeholder=''"></div>
-            <div><label>ساعات الليل</label><input id='hrN' type='number' placeholder="مثال: 10" onfocus="this.placeholder=''"></div>
-            
-            <div class='full'><label>نوع البطاريات</label>
-                <select id='b-type'>
-                    <option value="0.8">ليثيوم (تفريغ 80%)</option>
-                    <option value="0.5">جل / أسيد (تفريغ 50%)</option>
-                </select>
-            </div>
-            <div><label>سعة البطارية (Ah)</label><input id='b-size' type='number' placeholder="مثال: 200" onfocus="this.placeholder=''"></div>
-            <div><label>جهد النظام (V)</label>
-                <select id='volt'>
-                    <option value="12">12V</option>
-                    <option value="24">24V</option>
-                    <option value="48" selected>48V</option>
-                </select>
-            </div>
-            <div class='full'><button onclick='calc()'>إصدار التقرير الفني</button></div>
+
+<div class="main-card">
+    <img src="mur.png" class="profile-img" alt="المهندس مراد">
+    <h2>المهندس مراد الأثوري</h2>
+    <div class="sub-text">مدير مؤسسة عادل الجرادي للطاقة المتجددة</div>
+
+    <div class="grid">
+        <div>
+            <label>حمل النهار (وات)</label>
+            <input type="number" id="p_day" placeholder="مثلاً: 1500" onfocus="this.placeholder=''">
         </div>
-        <div id='out'></div>
+        <div>
+            <label>ساعات النهار</label>
+            <input type="number" id="h_day" placeholder="مثلاً: 6" onfocus="this.placeholder=''">
+        </div>
+        <div>
+            <label>حمل الليل (وات)</label>
+            <input type="number" id="p_night" placeholder="مثلاً: 500" onfocus="this.placeholder=''">
+        </div>
+        <div>
+            <label>ساعات الليل</label>
+            <input type="number" id="h_night" placeholder="مثلاً: 10" onfocus="this.placeholder=''">
+        </div>
+        <div class="full">
+            <label>قدرة اللوح المتوفر (وات)</label>
+            <input type="number" id="panel_w" placeholder="مثلاً: 550" onfocus="this.placeholder=''">
+        </div>
+        <div class="full">
+            <label>نوع البطاريات</label>
+            <select id="b_tech">
+                <option value="0.8">ليثيوم LiFePO4 (تفريغ 80%)</option>
+                <option value="0.5">جل/أسيد Deep Cycle (تفريغ 50%)</option>
+            </select>
+        </div>
+        <div>
+            <label>سعة البطارية (Ah)</label>
+            <input type="number" id="b_ah" placeholder="مثلاً: 200" onfocus="this.placeholder=''">
+        </div>
+        <div>
+            <label>جهد النظام (V)</label>
+            <select id="sys_v">
+                <option value="12">12V</option>
+                <option value="24">24V</option>
+                <option value="48" selected>48V</option>
+            </select>
+        </div>
     </div>
+
+    <button class="btn-calc" onclick="generateReport()">إصدار التقرير الفني النهائي</button>
+
+    <div id="report-area"></div>
 </div>
 
 <script>
-function calc(){
-    // المنطق البرمجي: إذا كانت الخانة فارغة، يستخدم القيمة الافتراضية بدقة
-    const ld = parseFloat(document.getElementById('loadD').value) || 1500;
-    const hd = parseFloat(document.getElementById('hrD').value) || 6;
-    const ln = parseFloat(document.getElementById('loadN').value) || 500;
-    const hn = parseFloat(document.getElementById('hrN').value) || 10;
-    const v = parseFloat(document.getElementById('volt').value);
-    const dod = parseFloat(document.getElementById('b-type').value);
-    const bSize = parseFloat(document.getElementById('b-size').value) || 200;
+function generateReport() {
+    const pD = parseFloat(document.getElementById('p_day').value) || 1500;
+    const hD = parseFloat(document.getElementById('h_day').value) || 6;
+    const pN = parseFloat(document.getElementById('p_night').value) || 500;
+    const hN = parseFloat(document.getElementById('h_night').value) || 10;
+    const pW = parseFloat(document.getElementById('panel_w').value) || 550;
+    const bAh = parseFloat(document.getElementById('b_ah').value) || 200;
+    const vS = parseFloat(document.getElementById('sys_v').value);
+    const dod = parseFloat(document.getElementById('b_tech').value);
 
-    const dayE = ld * hd; 
-    const nightE = ln * hn; 
-    const totalE = dayE + nightE;
+    // الحسابات الهندسية
+    const energyDay = pD * hD;
+    const energyNight = pN * hN;
+    const totalE = energyDay + energyNight;
 
-    const reqAh = (nightE / v) / dod;
-    const numBatt = Math.ceil(reqAh / bSize);
-    const numPanels = Math.ceil(totalE / (550 * 5 * 0.8));
-    const inv = (Math.max(ld, ln) * 1.3 / 1000).toFixed(1);
+    // 1. عدد الألواح بناءً على قدرة اللوح المدخلة
+    const numPanels = Math.ceil(totalE / (pW * 5 * 0.8));
 
-    document.getElementById('out').innerHTML = `
-    <div class="res-box">
-        <center><b style="color:#ffd54f; font-size:18px;">📋 نتائج التصميم الهندسي</b></center><br>
-        <div class="res-row"><span>عدد الألواح (550W):</span> <span class="res-val">${numPanels} ألواح</span></div>
-        <div class="res-row"><span>عدد البطاريات (${bSize}Ah):</span> <span class="res-val">${numBatt} حبات</span></div>
-        <div class="res-row"><span>حجم الانفرتر:</span> <span class="res-val">${inv} kW</span></div>
-        <div class="res-row"><span>إجمالي الاستهلاك:</span> <span>${totalE} Wh/يوم</span></div>
-        <br>
-        <button style="background:#2ecc71; color:#fff;" onclick="window.print()">طباعة كتقرير PDF</button>
-    </div>`;
+    // 2. عدد البطاريات بناءً على نوع البطارية (ليثيوم أو جل)
+    const reqAh = (energyNight / vS) / dod;
+    const numBatt = Math.ceil(reqAh / bAh);
+
+    // 3. حجم الانفرتر (يظهر في التقرير فقط)
+    const invSize = (Math.max(pD, pN) * 1.3 / 1000).toFixed(1);
+
+    document.getElementById('report-area').innerHTML = `
+        <div class="res-box">
+            <center><h3 style="color:var(--gold); margin:0 0 15px 0;">📋 نتائج التقرير الفني</h3></center>
+            <div class="res-row"><span>عدد الألواح (${pW}W):</span> <span class="res-val">${numPanels} ألواح</span></div>
+            <div class="res-row"><span>عدد البطاريات (${bAh}Ah):</span> <span class="res-val">${numBatt} حبات</span></div>
+            <div class="res-row"><span>حجم الانفرتر المطلوب:</span> <span class="res-val">${invSize} kW</span></div>
+            <div class="res-row" style="border:none;"><span>إجمالي استهلاك اليوم:</span> <span>${totalE} Wh</span></div>
+            <br>
+            <button style="background:#27ae60; color:#fff; width:100%; padding:12px; border-radius:10px; border:none; cursor:pointer; font-weight:bold;" onclick="window.print()">حفظ التقرير كـ PDF</button>
+        </div>
+    `;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 </script>
 </body>
 </html>
+
