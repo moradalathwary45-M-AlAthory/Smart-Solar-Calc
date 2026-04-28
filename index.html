@@ -1,126 +1,80 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"> 
+<html lang="ar" dir="rtl">
 <head>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/moradalathwary45-M-AlAthory/Smart-Solar-Calc/main/1000174410.png">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/moradalathwary45-M-AlAthory/Smart-Solar-Calc/main/1000174410.png">
-
-
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="حاسبة مراد">
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة الطاقة الذكية - مؤسسة عادل الجرادي</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/moradalathwary45-M-AlAthory/Smart-Solar-Calc/main/1000174410.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/moradalathwary45-M-AlAthory/Smart-Solar-Calc/main/1000174410.png">
+    <title>حاسبة الطاقة الذكية - المهندس مراد الأثوري</title>
     <style>
-        :root { --main-bg: #121212; --card-bg: #1e1e1e; --accent: #f39c12; --text: #e0e0e0; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--main-bg); color: var(--text); margin: 0; padding: 10px; }
-        .container { max-width: 500px; margin: auto; background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        h2 { text-align: center; color: var(--accent); margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .group { background: #252525; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.9em; }
-        input, select { width: 100%; padding: 12px; background: #333; border: 1px solid #444; color: white; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--accent); color: #000; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #e67e22; }
-        .result { display: none; margin-top: 20px; padding: 15px; background: #1a332a; border-radius: 8px; border-right: 4px solid #27ae60; line-height: 1.8; }
-        .wa-btn { display: none; background: #25D366; color: white; text-decoration: none; text-align: center; padding: 15px; border-radius: 8px; margin-top: 10px; font-weight: bold; }
-        .brand { text-align: center; margin-top: 20px; font-size: 0.8em; color: #888; }
+        body{margin:0;font-family:Tahoma,sans-serif;background:#07111f;color:#fff;padding:10px}
+        .wrap{max-width:600px;margin:auto;padding:10px}
+        .card{background:#0d1b2a;border:1px solid #1d3557;border-radius:18px;padding:20px;box-shadow:0 0 20px rgba(0,150,255,.15)}
+        h1{text-align:center;color:#ffd54f;font-size:22px;margin-top:15px}
+        .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .full{grid-column:1/-1}
+        label{display:block;margin:8px 0 4px;color:#9ecbff;font-size:13px}
+        input,select,button{width:100%;padding:12px;border-radius:12px;border:none;box-sizing:border-box;font-size:16px}
+        input,select{background:#13263d;color:#fff;border:1px solid #1d3557}
+        button{background:linear-gradient(45deg,#ff9800,#ffd54f);font-weight:bold;color:#000;cursor:pointer;margin-top:10px}
+        #out{margin-top:15px;line-height:1.9}
+        .hero{width:120px;height:120px;border-radius:50%;display:block;margin:0 auto;border:3px solid #ff9800;object-fit:cover}
+        @media(max-width:500px){.grid{grid-template-columns:1fr}}
+        .res-box{background:#13263d; padding:15px; border-radius:12px; border:1px solid #ff9800; margin-top:10px;}
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>حاسبة الطاقة الذكية ⚡</h2>
-    
-    <div class="group">
-        <label>إجمالي الحمل (وات) - يشمل المكيفات:</label>
-        <input type="number" id="load" placeholder="مثلاً: 3000">
+<div class='wrap'>
+    <div class='card'>
+        <img class='hero' src='https://raw.githubusercontent.com/moradalathwary45-M-AlAthory/Smart-Solar-Calc/main/1000174410.png' alt="المهندس مراد الأثوري">
+        <h1>⚡ حاسبة الطاقة الذكية ⚡</h1>
+        <p style="text-align:center; color:#9ecbff; margin-top:-10px">مؤسسة عادل الجرادي للطاقة</p>
         
-        <label>ساعات التشغيل المطلوبة:</label>
-        <input type="number" id="hrs" placeholder="مثلاً: 8">
-    </div>
-
-    <div class="group">
-        <label>فولتية النظام:</label>
-        <select id="v_sys">
-            <option value="12">12 فولت</option>
-            <option value="24" selected>24 فولت</option>
-            <option value="48">48 فولت</option>
-        </select>
-
-        <label>نوع التخزين المفضل:</label>
-        <select id="b_type">
-            <option value="0.85">بطاريات ليثيوم (LifePo4)</option>
-            <option value="0.50">بطاريات جل (Gel/Tubular)</option>
-            <option value="0.40">بطاريات أسيد (Lead Acid)</option>
-        </select>
-    </div>
-
-    <div class="group">
-        <label>قدرة اللوح المستخدم (وات):</label>
-        <input type="number" id="p_watt" value="550">
-        
-        <label>طول الكابل (من الألواح للإنفرتر):</label>
-        <input type="number" id="dist" value="15">
-    </div>
-
-    <button onclick="calculate()">تحليل النظام الفني</button>
-
-    <div id="res" class="result"></div>
-    <a href="#" id="wa_link" class="wa-btn" target="_blank">مشاركة التقرير عبر واتساب</a>
-
-    <div class="brand">
-برمجة المهندس: مراد عبد الواحد الاثوري  <br>
-        مؤسسة عادل الجرادي للطاقة المتجددة - الحديدة
+        <div class='grid'>
+            <div><label>إجمالي الحمل (وات)</label><input id='load' type='number' value='3000'></div>
+            <div><label>ساعات النهار</label><input id='day' type='number' value='6'></div>
+            <div><label>ساعات الليل</label><input id='night' type='number' value='8'></div>
+            <div><label>جهد النظام (V)</label><select id='volt'><option value="12">12V</option><option value="24">24V</option><option value="48" selected>48V</option></select></div>
+            <div><label>قدرة اللوح (وات)</label><input id='panel' type='number' value='550'></div>
+            <div><label>ساعات الشمس</label><input id='sun' type='number' value='5'></div>
+            <div><label>كفاءة النظام %</label><input id='eff' type='number' value='80'></div>
+            <div><label>أيام الاحتياط</label><input id='days' type='number' value='1'></div>
+            <div class='full'><button onclick='calc()'>احسب المنظومة الآن</button></div>
+        </div>
+        <div id='out'></div>
+        <div class='full'><button style="background:#2e7d32; color:#fff" onclick='window.print()'>حفظ التقرير PDF</button></div>
     </div>
 </div>
 
 <script>
-function calculate() {
-    const load = parseFloat(document.getElementById('load').value);
-    const hrs = parseFloat(document.getElementById('hrs').value);
-    const vsys = parseFloat(document.getElementById('v_sys').value);
-    const b_eff = parseFloat(document.getElementById('b_type').value);
-    const pwatt = parseFloat(document.getElementById('p_watt').value);
-    const dist = parseFloat(document.getElementById('dist').value);
+function calc(){
+    const l = +document.getElementById('load').value;
+    const d = +document.getElementById('day').value;
+    const n = +document.getElementById('night').value;
+    const v = +document.getElementById('volt').value;
+    const p = +document.getElementById('panel').value;
+    const s = +document.getElementById('sun').value;
+    const e = +document.getElementById('eff').value/100;
+    const ds = +document.getElementById('days').value;
 
-    if(!load || !hrs) { alert("يرجى إدخال الأحمال"); return; }
+    const dayWh = l * d;
+    const nightWh = l * n;
+    const total = dayWh + nightWh;
+    const battWh = (nightWh * ds) / e;
+    const ah = battWh / v;
+    const inv = (l * 1.25 / 1000).toFixed(1);
+    const panels = Math.ceil(total / (p * s * e));
 
-    const energy = load * hrs;
-    
-    // حساب سعة البطارية
-    const ah_needed = (energy / vsys) / b_eff;
-    const b_qty = Math.ceil(ah_needed / 200); 
-
-    // حساب الألواح
-    const solar_p = (energy * 1.3) / 5; 
-    const p_qty = Math.ceil(solar_p / pwatt);
-
-    // حجم الإنفرتر
-    const inv = Math.ceil((load * 1.25) / 1000);
-
-    // مقاس السلك (تقديري هندسي)
-    let wire = "6 مم";
-    if (dist > 20 || (solar_p/vsys) > 40) wire = "10 مم";
-    if ((solar_p/vsys) > 60) wire = "16 مم";
-
-    const report = `
-<b>نتائج التحليل الفني:</b><br>
-✅ حجم الإنفرتر المناسب: ${inv} كيلو وات<br>
-✅ عدد الألواح (${pwatt}W): ${p_qty} ألواح<br>
-✅ سعة التخزين المطلوبة: ${ah_needed.toFixed(0)} أمبير<br>
-✅ عدد بطاريات (200A): ${b_qty} بطارية<br>
-✅ مقاس الكابل المقترح: ${wire}<br>
-📍 نظام تشغيل آمن ومستقر لمؤسسة الجرادي.
-    `;
-
-    const resDiv = document.getElementById('res');
-    resDiv.style.display = 'block';
-    resDiv.innerHTML = report;
-
-    const waText = window.encodeURIComponent("تقرير فني - مؤسسة عادل الجرادي:\n" + report.replace(/<br>/g, "\n").replace(/<b>/g, "").replace(/<\/b>/g, ""));
-    const waLink = document.getElementById('wa_link');
-    waLink.href = "https://wa.me/?text=" + waText;
-    waLink.style.display = 'block';
+    document.getElementById('out').innerHTML = `
+    <div class='res-box'>
+        <b style="color:#ffd54f">📊 النتائج الهندسية المقترحة:</b><br>
+        • استهلاك النهار: ${dayWh} Wh<br>
+        • استهلاك الليل: ${nightWh} Wh<br>
+        • الإجمالي اليومي: ${total} Wh/day<br>
+        • سعة البطارية: ${ah.toFixed(0)} Ah @ ${v}V<br>
+        • حجم الانفرتر: ${inv} kW<br>
+        • عدد الألواح: ${panels} لوح (قدرة ${p}W)
+    </div>`;
 }
 </script>
 </body>
