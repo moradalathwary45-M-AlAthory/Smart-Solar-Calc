@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"> 
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/moradalathwary45-M-AlAthory/Smart-Solar-Calc/main/1000174410.png">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/moradalathwary45-M-AlAthory/Smart-Solar-Calc/main/1000174410.png">
     <title>حاسبة الطاقة الذكية - المهندس مراد الأثوري</title>
     <style>
         body{margin:0;font-family:Tahoma,sans-serif;background:#07111f;color:#fff;padding:10px}
         .wrap{max-width:600px;margin:auto;padding:10px}
         .card{background:#0d1b2a;border:1px solid #1d3557;border-radius:18px;padding:20px;box-shadow:0 0 20px rgba(0,150,255,.15)}
-        h1{text-align:center;color:#ffd54f;font-size:22px;margin-top:15px}
+        h1{text-align:center;color:#ffd54f;font-size:22px;margin-top:15px;margin-bottom:5px}
         .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
         .full{grid-column:1/-1}
         label{display:block;margin:8px 0 4px;color:#9ecbff;font-size:13px}
@@ -18,47 +16,48 @@
         input,select{background:#13263d;color:#fff;border:1px solid #1d3557}
         button{background:linear-gradient(45deg,#ff9800,#ffd54f);font-weight:bold;color:#000;cursor:pointer;margin-top:10px}
         #out{margin-top:15px;line-height:1.9}
-        .hero{width:120px;height:120px;border-radius:50%;display:block;margin:0 auto;border:3px solid #ff9800;object-fit:cover}
+        .hero{width:150px;height:150px;border-radius:20px;display:block;margin:0 auto;border:3px solid #ff9800;object-fit:cover;box-shadow:0 0 15px #ff9800}
         @media(max-width:500px){.grid{grid-template-columns:1fr}}
         .res-box{background:#13263d; padding:15px; border-radius:12px; border:1px solid #ff9800; margin-top:10px;}
+        .name-tag{text-align:center; color:#ffd54f; font-weight:bold; margin:5px 0; font-size:18px;}
+        .firm-tag{text-align:center; color:#9ecbff; margin-bottom:15px; font-size:14px;}
     </style>
 </head>
 <body>
 <div class='wrap'>
     <div class='card'>
-        <img class='hero' src='file_0000000001f8724697b1d7221a28a3f8.png' alt="المهندس مراد الأثوري">
+        <img class='hero' src='file_0000000001f8724697b1d7221ad0a368.png' alt="المهندس مراد الأثوري">
         
         <h1>⚡ حاسبة الطاقة الذكية ⚡</h1>
-        <p style="text-align:center; color:#ffd54f; font-weight:bold; margin-top:-5px; font-size:18px;">المهندس مراد الأثوري</p>
-
-        <p style="text-align:center; color:#9ecbff; margin-top:-10px">مؤسسة عادل الجرادي للطاقة</p>
+        <div class="name-tag">المهندس مراد الأثوري</div>
+        <div class="firm-tag">مؤسسة عادل الجرادي للطاقة</div>
         
         <div class='grid'>
-            <div><label>إجمالي الحمل (وات)</label><input id='load' type='number' value='3000'></div>
-            <div><label>ساعات النهار</label><input id='day' type='number' value='6'></div>
-            <div><label>ساعات الليل</label><input id='night' type='number' value='8'></div>
+            <div><label>إجمالي الحمل (وات)</label><input id='load' type='number' placeholder='3000'></div>
+            <div><label>ساعات النهار</label><input id='day' type='number' placeholder='6'></div>
+            <div><label>ساعات الليل</label><input id='night' type='number' placeholder='8'></div>
             <div><label>جهد النظام (V)</label><select id='volt'><option value="12">12V</option><option value="24">24V</option><option value="48" selected>48V</option></select></div>
-            <div><label>قدرة اللوح (وات)</label><input id='panel' type='number' value='550'></div>
-            <div><label>ساعات الشمس</label><input id='sun' type='number' value='5'></div>
-            <div><label>كفاءة النظام %</label><input id='eff' type='number' value='80'></div>
-            <div><label>أيام الاحتياط</label><input id='days' type='number' value='1'></div>
+            <div><label>قدرة اللوح (وات)</label><input id='panel' type='number' placeholder='550'></div>
+            <div><label>ساعات الشمس</label><input id='sun' type='number' placeholder='5'></div>
+            <div><label>كفاءة النظام %</label><input id='eff' type='number' placeholder='80'></div>
+            <div><label>أيام الاحتياط</label><input id='days' type='number' placeholder='1'></div>
             <div class='full'><button onclick='calc()'>احسب المنظومة الآن</button></div>
         </div>
         <div id='out'></div>
-        <div class='full'><button style="background:#2e7d32; color:#fff" onclick='window.print()'>حفظ التقرير PDF</button></div>
+        <div class='full'><button style="background:#2e7d32; color:#fff; margin-top:20px;" onclick='window.print()'>حفظ التقرير PDF</button></div>
     </div>
 </div>
 
 <script>
 function calc(){
-    const l = +document.getElementById('load').value;
-    const d = +document.getElementById('day').value;
-    const n = +document.getElementById('night').value;
+    const l = +document.getElementById('load').value || 3000;
+    const d = +document.getElementById('day').value || 6;
+    const n = +document.getElementById('night').value || 8;
     const v = +document.getElementById('volt').value;
-    const p = +document.getElementById('panel').value;
-    const s = +document.getElementById('sun').value;
-    const e = +document.getElementById('eff').value/100;
-    const ds = +document.getElementById('days').value;
+    const p = +document.getElementById('panel').value || 550;
+    const s = +document.getElementById('sun').value || 5;
+    const e = (+document.getElementById('eff').value || 80)/100;
+    const ds = +document.getElementById('days').value || 1;
 
     const dayWh = l * d;
     const nightWh = l * n;
@@ -71,12 +70,12 @@ function calc(){
     document.getElementById('out').innerHTML = `
     <div class='res-box'>
         <b style="color:#ffd54f">📊 النتائج الهندسية المقترحة:</b><br>
-        • استهلاك النهار: ${dayWh} Wh<br>
-        • استهلاك الليل: ${nightWh} Wh<br>
-        • الإجمالي اليومي: ${total} Wh/day<br>
-        • سعة البطارية: ${ah.toFixed(0)} Ah @ ${v}V<br>
-        • حجم الانفرتر: ${inv} kW<br>
-        • عدد الألواح: ${panels} لوح (قدرة ${p}W)
+        • استهلاك النهار: \${dayWh} Wh<br>
+        • استهلاك الليل: \${nightWh} Wh<br>
+        • الإجمالي اليومي: \${total} Wh/day<br>
+        • سعة البطارية: \${ah.toFixed(0)} Ah @ \${v}V<br>
+        • حجم الانفرتر: \${inv} kW<br>
+        • عدد الألواح: \${panels} لوح (قدرة \${p}W)
     </div>`;
 }
 </script>
