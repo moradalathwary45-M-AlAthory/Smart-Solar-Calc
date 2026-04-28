@@ -4,54 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة المهندس مراد - مؤسسة عادل الجرادي</title>
+    <title>حاسبة المهندس مراد الأثوري</title>
     <style>
         body{margin:0; font-family:Tahoma,sans-serif;background:#07111f;color:#fff;padding:10px}
         .wrap{max-width:600px;margin:auto;padding:10px}
-        .card{background:#0d1b2a;border:1px solid #1d3557;border-radius:18px;padding:20px;box-shadow:0 0 20px rgba(0,15,30,0.5);text-align:center;color:#ffd54f;margin-top:5px}
-        /* التعديل الجديد لتصغير حجم العنوان وجعله أنيقاً */
-        .main-title { font-size: 24px; margin: 15px 0; display: flex; align-items: center; justify-content: center; gap: 10px; color: #ffd54f; }
-        .main-title span { font-size: 20px; } 
-        
-        .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:right}
+        .card{background:#0d1b2a;border:1px solid #1d3557;border-radius:18px;padding:20px;box-shadow:0 0 20px rgba(0,15,30,0.5);text-align:center}
+        .main-title { font-size: 22px; margin: 15px 0; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffd54f; }
+        .grid{display:grid;grid-template-columns: 1fr 1fr;gap:12px;text-align:right}
         .full{grid-column:1/-1}
         label{display:block;margin:8px 0 4px;color:#9ecbff;font-size:13px;font-weight:bold}
         input,select,button{width:100%;padding:12px;border-radius:12px;border:none;box-sizing:border-box;font-size:15px}
-        input,select{background:#13263d;color:#fff;border:1px solid #1d3557}
+        input,select{background:#13263d;color:#fff;border:1px solid #1d3557; transition: 0.3s;}
+        input:focus{outline: 2px solid #ff9800; background: #1a2a3a;}
         button{background:linear-gradient(45deg,#ff9800,#ffd54f);font-weight:bold;color:#000;cursor:pointer;margin-top:15px;font-size:18px}
-        #out{margin-top:15px;line-height:1.6;text-align:right}
-        .hero{width:130px;height:130px;border-radius:20px;display:block;margin:0 auto;border:3px solid #ff9800;object-fit:cover}
-        .res-box{background:#13263d; padding:15px; border-radius:12px; border:1px solid #ff9800; margin-top:10px; font-size:16px; color:#fff}
-        .name-tag{text-align:center; color:#ffd54f; font-weight:bold; margin:10px 0 5px; font-size:19px;}
-        .firm-tag{text-align:center; color:#9ecbff; margin-bottom:15px; font-size:13px;}
+        #out{margin-top:20px; text-align:right}
+        .hero{width:120px;height:120px;border-radius:20px;display:block;margin:0 auto;border:3px solid #ff9800;object-fit:cover}
+        .res-box{background:#1a2a3a; padding:20px; border-radius:15px; border:2px solid #ff9800; color:#fff; line-height:1.8}
+        .res-row{display:flex; justify-content:space-between; border-bottom:1px solid #2d4059; padding:10px 0}
+        .res-val{color:#ff9800; font-weight:bold; font-size:20px}
+        .name-tag{color:#ffd54f; font-weight:bold; margin:10px 0 5px; font-size:18px;}
+        .firm-tag{color:#9ecbff; margin-bottom:15px; font-size:13px;}
     </style>
 </head>
 <body>
 <div class='wrap'>
     <div class='card'>
-        <img class='hero' src='mur.png' alt="المهندس مراد الأثوري">
-        
-        <div class="main-title">
-            <span>⚡</span> حاسبة الطاقة الذكية <span>⚡</span>
-        </div>
-
+        <img class='hero' src='mur.png' alt="المهندس مراد">
+        <div class="main-title"><span>⚡</span> حاسبة الطاقة الذكية <span>⚡</span></div>
         <div class="name-tag">المهندس مراد الأثوري</div>
         <div class="firm-tag">مؤسسة عادل الجرادي للطاقة المتجددة</div>
         
         <div class='grid'>
-            <div><label>حمل النهار (وات)</label><input id='loadD' type='number' value='1500'></div>
-            <div><label>ساعات النهار</label><input id='hrD' type='number' value='6'></div>
-            <div><label>حمل الليل (وات)</label><input id='loadN' type='number' value='500'></div>
-            <div><label>ساعات الليل</label><input id='hrN' type='number' value='10'></div>
+            <div><label>حمل النهار (وات)</label><input id='loadD' type='number' placeholder="مثال: 1500" onfocus="this.placeholder=''"></div>
+            <div><label>ساعات النهار</label><input id='hrD' type='number' placeholder="مثال: 6" onfocus="this.placeholder=''"></div>
+            <div><label>حمل الليل (وات)</label><input id='loadN' type='number' placeholder="مثال: 500" onfocus="this.placeholder=''"></div>
+            <div><label>ساعات الليل</label><input id='hrN' type='number' placeholder="مثال: 10" onfocus="this.placeholder=''"></div>
             
-            <div class='full' style="border-top:1px solid #1d3557; margin-top:10px; padding-top:10px;">
-                <label>نوع التقنية المستخدمة</label>
+            <div class='full'><label>نوع البطاريات</label>
                 <select id='b-type'>
-                    <option value="0.8">بطاريات ليثيوم (LiFePO4)</option>
-                    <option value="0.5">بطاريات جل / أسيد (Deep Cycle)</option>
+                    <option value="0.8">ليثيوم (تفريغ 80%)</option>
+                    <option value="0.5">جل / أسيد (تفريغ 50%)</option>
                 </select>
             </div>
-            <div><label>سعة البطارية (Ah)</label><input id='b-size' type='number' value='200'></div>
+            <div><label>سعة البطارية (Ah)</label><input id='b-size' type='number' placeholder="مثال: 200" onfocus="this.placeholder=''"></div>
             <div><label>جهد النظام (V)</label>
                 <select id='volt'>
                     <option value="12">12V</option>
@@ -67,36 +62,33 @@
 
 <script>
 function calc(){
-    const ld = parseFloat(document.getElementById('loadD').value);
-    const hd = parseFloat(document.getElementById('hrD').value);
-    const ln = parseFloat(document.getElementById('loadN').value);
-    const hn = parseFloat(document.getElementById('hrN').value);
+    // المنطق البرمجي: إذا كانت الخانة فارغة، يستخدم القيمة الافتراضية بدقة
+    const ld = parseFloat(document.getElementById('loadD').value) || 1500;
+    const hd = parseFloat(document.getElementById('hrD').value) || 6;
+    const ln = parseFloat(document.getElementById('loadN').value) || 500;
+    const hn = parseFloat(document.getElementById('hrN').value) || 10;
     const v = parseFloat(document.getElementById('volt').value);
     const dod = parseFloat(document.getElementById('b-type').value);
-    const bSize = parseFloat(document.getElementById('b-size').value);
+    const bSize = parseFloat(document.getElementById('b-size').value) || 200;
 
-    const dayEnergy = ld * hd;
-    const nightEnergy = ln * hn;
-    const totalDaily = dayEnergy + nightEnergy;
+    const dayE = ld * hd; 
+    const nightE = ln * hn; 
+    const totalE = dayE + nightE;
 
-    const requiredAh = (nightEnergy / v) / dod;
-    const numBatteries = Math.ceil(requiredAh / bSize);
-
-    const panels = Math.ceil(totalDaily / (550 * 5 * 0.8));
-    const maxLoad = Math.max(ld, ln);
-    const inv = (maxLoad * 1.3 / 1000).toFixed(1);
+    const reqAh = (nightE / v) / dod;
+    const numBatt = Math.ceil(reqAh / bSize);
+    const numPanels = Math.ceil(totalE / (550 * 5 * 0.8));
+    const inv = (Math.max(ld, ln) * 1.3 / 1000).toFixed(1);
 
     document.getElementById('out').innerHTML = `
     <div class="res-box">
-        <b style="color:#ffd54f;">📋 تفاصيل المنظومة المصممة:</b><br><br>
-        • استهلاك النهار: <b>${dayEnergy} Wh</b><br>
-        • استهلاك الليل: <b>${nightEnergy} Wh</b><br><br>
-        <b style="color:#ffd54f;">🔋 قسم البطاريات (احتياج الليل):</b><br>
-        • عدد البطاريات: <b style="color:#ff9800; font-size:18px;">${numBatteries} حبات</b><br>
-        • إجمالي الأمبير المطلوب: <b>${requiredAh.toFixed(0)} Ah</b><br><br>
-        <b style="color:#ffd54f;">☀️ قسم الألواح والانفرتر:</b><br>
-        • عدد الألواح: <b>${panels} ألواح</b> (550W)<br>
-        • حجم الانفرتر المقترح: <b>${inv} kW</b>
+        <center><b style="color:#ffd54f; font-size:18px;">📋 نتائج التصميم الهندسي</b></center><br>
+        <div class="res-row"><span>عدد الألواح (550W):</span> <span class="res-val">${numPanels} ألواح</span></div>
+        <div class="res-row"><span>عدد البطاريات (${bSize}Ah):</span> <span class="res-val">${numBatt} حبات</span></div>
+        <div class="res-row"><span>حجم الانفرتر:</span> <span class="res-val">${inv} kW</span></div>
+        <div class="res-row"><span>إجمالي الاستهلاك:</span> <span>${totalE} Wh/يوم</span></div>
+        <br>
+        <button style="background:#2ecc71; color:#fff;" onclick="window.print()">طباعة كتقرير PDF</button>
     </div>`;
 }
 </script>
